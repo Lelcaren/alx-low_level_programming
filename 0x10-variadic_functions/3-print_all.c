@@ -1,55 +1,57 @@
-#include <stdio.h>
+#include "variadic_functions.h"
 #include <stdarg.h>
+#include <stdio.h>
 
-void print_all(const char * const format, ...) {
-    va_list args;
-    va_start(args, format);
+/**
+ * print_all - prints anything
+ * @format: list of types of arguments passed to the function
+ */
+void print_all(const char * const format, ...)
+{
+	int i = 0;
+	char *str, *sep = "";
 
-    char c;
-    int i;
-    float f;
-    char *s;
+	va_list list;
 
-    int char_printed = 0;
+	va_start(list, format);
 
-    while (*format) {
-        if (*format == 'c') {
-            c = (char)va_arg(args, int);
-            printf("%c", c);
-            char_printed = 1;
-        } else if (*format == 'i') {
-            i = va_arg(args, int);
-            if (char_printed)
-                printf(", ");
-            printf("%d", i);
-            char_printed = 1;
-        } else if (*format == 'f') {
-            f = (float)va_arg(args, double);
-            if (char_printed)
-                printf(", ");
-            printf("%f", f);
-            char_printed = 1;
-        } else if (*format == 's') {
-            s = va_arg(args, char *);
-            if (char_printed)
-                printf(", ");
-            if (s == NULL) {
-                printf("(nil)");
-            } else {
-                printf("%s", s);
-            }
-            char_printed = 1;
-        }
+	if (format)
+	{
+		while (format[i])
+		{
+			switch (format[i])
+			{
+			case 'c':
+				printf("%s%c", sep, va_arg(list, int));
+				break;
+			case 'i':
+				printf("%s%d", sep, va_arg(list, int));
+				break;
+			case 'f':
+				printf("%s%f", sep, va_arg(list, double));
+				break;
+			case 's':
+				str = va_arg(list, char *);
+				if (!str)
+					str = "(nil)";
+				printf("%s%s", sep, str);
+				break;
+			default:
+				i++;
+				continue;
+			}
+			sep = ", ";
+			i++;
+		}
+	}
 
-        format++;
-    }
-
-    va_end(args);
-    printf("\n");
+	va_end(list);
+	printf("\n");
 }
 
-int main(void) {
-    print_all("ceis", 'B', 3, "stSchool");
-    return 0;
+int main(void)
+{
+	print_all("ceis", 'B', 3, "stSchool");
+	return 0;
 }
 
