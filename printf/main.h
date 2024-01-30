@@ -3,19 +3,18 @@
 
 #include <stdarg.h>
 
-/* Structure to hold conversion specifier and corresponding function */
-typedef struct specifier
+typedef struct format
 {
-    char *specifier;
-    int (*printer)(va_list args);
+    char *ph;
+    int (*function)(va_list);
 } convert;
 
+int print_c(va_list val);
+int print_s(va_list val);
+int print_i(va_list val);
+int print_d(va_list val);
+int print_percentage(va_list val);
 int _printf(const char *format, ...);
-int print_char(va_list args);
-int print_str(va_list args);
-int print_percent(va_list args);
-int print_decimal(va_list args);
-int print_integer(va_list args);
 
-#endif /* MAIN_H */
+#endif
 
