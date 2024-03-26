@@ -14,5 +14,3 @@ s++;
 }
 return (longi);
 }
- 
-
